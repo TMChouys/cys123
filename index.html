@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="派派鼠冒險留言板——和三位夥伴一起留下旅途訊息。">
+  <title>派派鼠冒險留言板</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect rx='16' width='64' height='64' fill='%230c2533'/%3E%3Ccircle cx='19' cy='21' r='10' fill='%23f4b76a'/%3E%3Ccircle cx='45' cy='21' r='10' fill='%23f4b76a'/%3E%3Ccircle cx='32' cy='35' r='21' fill='%23f7d39a'/%3E%3Ccircle cx='25' cy='32' r='3' fill='%2312252b'/%3E%3Ccircle cx='39' cy='32' r='3' fill='%2312252b'/%3E%3Cpath d='M28 40q4 6 8 0' fill='none' stroke='%2312252b' stroke-width='3' stroke-linecap='round'/%3E%3C/svg%3E">
+  <style>
+    :root{--ink:#f8f3db;--deep:#071b25;--panel:rgba(9,31,42,.86);--gold:#ffc85a;--mint:#63e2bd;--coral:#ff806c;--line:rgba(255,255,255,.15)}
+    *{box-sizing:border-box}html{color-scheme:dark}body{margin:0;min-height:100vh;color:var(--ink);font-family:"Noto Sans TC","Microsoft JhengHei",system-ui,sans-serif;background:linear-gradient(90deg,rgba(3,13,19,.12),rgba(3,13,19,.72)),url("assets/paipai-adventure.png") center/cover fixed no-repeat}
+    body:before{content:"";position:fixed;inset:0;pointer-events:none;background:radial-gradient(circle at 20% 60%,transparent 0 22%,rgba(4,18,25,.25) 52%,rgba(4,18,25,.82) 100%)}
+    .app{position:relative;z-index:1;width:min(1180px,94vw);margin:auto;padding:24px 0 40px;display:grid;grid-template-columns:minmax(310px,.9fr) minmax(380px,1.15fr);gap:24px;align-items:start}
+    .brand{grid-column:1/-1;display:flex;justify-content:space-between;align-items:center;gap:16px}.logo{display:flex;align-items:center;gap:13px}.crest{width:54px;height:54px;display:grid;place-items:center;border:2px solid rgba(255,200,90,.7);border-radius:18px;background:linear-gradient(145deg,#163a43,#09232f);box-shadow:0 8px 28px rgba(0,0,0,.35);font-size:28px}.title h1{margin:0;font-size:clamp(1.55rem,4vw,2.5rem);letter-spacing:.06em}.title p{margin:.25rem 0 0;color:#d4e6df}.status{padding:9px 14px;border:1px solid rgba(99,226,189,.45);border-radius:99px;background:rgba(7,30,35,.74);font-weight:800;color:#b9f7df;white-space:nowrap}
+    .panel{border:1px solid var(--line);border-radius:26px;background:var(--panel);backdrop-filter:blur(16px);box-shadow:0 20px 54px rgba(0,0,0,.34);overflow:hidden}.welcome{margin-top:150px;padding:22px}.ribbon{display:inline-flex;gap:7px;align-items:center;padding:7px 11px;border-radius:99px;background:#fff2bf;color:#4d3514;font-size:.86rem;font-weight:900}.welcome h2{margin:15px 0 8px;font-size:1.55rem}.welcome>p{margin:0;color:#d6e4df;line-height:1.75}.team{display:grid;gap:10px;margin-top:19px}.member{display:flex;gap:12px;align-items:center;padding:11px;border-radius:15px;background:rgba(255,255,255,.065);border:1px solid rgba(255,255,255,.08)}.avatar{width:42px;height:42px;display:grid;place-items:center;border-radius:50%;font-size:21px;background:#183f47}.member b{display:block}.member small{color:#b7ccc5}.member:nth-child(2) .avatar{background:#1b3e68}.member:nth-child(3) .avatar{background:#496127}
+    .board{padding:22px}.board-head{display:flex;align-items:end;justify-content:space-between;gap:12px}.board h2{margin:0;font-size:1.35rem}.counter{color:#bdd4cc;font-size:.9rem}.form{display:grid;gap:13px;margin:18px 0 20px;padding-bottom:20px;border-bottom:1px solid var(--line)}.row{display:grid;grid-template-columns:1fr 1fr;gap:12px}label{display:grid;gap:7px;color:#e4eee9;font-weight:800;font-size:.92rem}input,select,textarea{width:100%;border:1px solid rgba(255,255,255,.18);border-radius:12px;background:rgba(3,16,23,.68);color:white;font:inherit;padding:12px 13px;outline:none}input:focus,select:focus,textarea:focus{border-color:var(--gold);box-shadow:0 0 0 3px rgba(255,200,90,.13)}textarea{min-height:92px;resize:vertical}.actions{display:flex;align-items:center;justify-content:space-between;gap:12px}.hint{font-size:.82rem;color:#abc1bb}.submit{border:0;border-radius:13px;padding:12px 18px;background:linear-gradient(135deg,var(--gold),#ff9868);color:#352007;font:900 1rem inherit;cursor:pointer;box-shadow:0 8px 20px rgba(255,153,104,.2);transition:.2s}.submit:hover{transform:translateY(-2px);filter:brightness(1.06)}.submit:active{transform:none}.messages{display:grid;gap:11px;max-height:420px;overflow:auto;padding-right:4px}.message{padding:13px 14px;border:1px solid rgba(255,255,255,.1);border-radius:15px;background:rgba(255,255,255,.055)}.meta{display:flex;justify-content:space-between;gap:12px;align-items:center}.name{font-weight:900;color:#fff2bd}.tag{font-size:.76rem;color:#071b25;background:var(--mint);border-radius:99px;padding:4px 8px;font-weight:900}.message p{margin:8px 0 0;color:#e5eeea;line-height:1.55;word-break:break-word}.time{font-size:.76rem;color:#9fb5ae;margin-top:7px}.empty{text-align:center;padding:24px;color:#b8cbc5}.toast{position:fixed;z-index:5;left:50%;bottom:26px;translate:-50% 16px;opacity:0;padding:11px 16px;border-radius:12px;background:#fff4cc;color:#38230d;font-weight:900;transition:.24s;pointer-events:none}.toast.show{opacity:1;translate:-50% 0}
+    @media(max-width:820px){body{background-position:38% center;background-attachment:scroll}.app{grid-template-columns:1fr;padding-top:15px}.brand{align-items:flex-start}.status{display:none}.welcome{margin-top:42vh}.board{padding:17px}.row{grid-template-columns:1fr}.actions{align-items:flex-end}.messages{max-height:none}}
+    @media(max-width:440px){.welcome{margin-top:38vh}.title p{font-size:.88rem}.crest{width:46px;height:46px}.panel{border-radius:21px}.hint{max-width:150px}.submit{padding:11px 14px}}
+    @media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;transition:none!important}}
+  </style>
+</head>
+<body>
+  <main class="app">
+    <header class="brand">
+      <div class="logo"><div class="crest" aria-hidden="true">🐹</div><div class="title"><h1>派派鼠冒險留言板</h1><p>在出發前，留下你的探險訊息！</p></div></div>
+      <div class="status">✦ 營地通訊正常</div>
+    </header>
+
+    <section class="panel welcome" aria-labelledby="welcome-title">
+      <span class="ribbon">🗺️ 冒險隊集合</span>
+      <h2 id="welcome-title">三位夥伴都在等你！</h2>
+      <p>歡迎來到派派鼠營地。寫下鼓勵、心得或任務情報，讓下一位玩家帶著你的訊息繼續前進。</p>
+      <div class="team">
+        <div class="member"><span class="avatar">🧭</span><div><b>派派隊長</b><small>「方向確認，等你一起出發！」</small></div></div>
+        <div class="member"><span class="avatar">📘</span><div><b>米洛法師</b><small>「知識就是最亮的魔法。」</small></div></div>
+        <div class="member"><span class="avatar">🌿</span><div><b>栗栗嚮導</b><small>「累了就回營地補充勇氣！」</small></div></div>
+      </div>
+    </section>
+
+    <section class="panel board" aria-labelledby="board-title">
+      <div class="board-head"><h2 id="board-title">營地留言卷軸</h2><span class="counter" id="counter">0 則訊息</span></div>
+      <form class="form" id="messageForm">
+        <div class="row">
+          <label>冒險者名稱<input id="name" name="name" maxlength="16" placeholder="例如：森林小勇者" required></label>
+          <label>留言類型<select id="type" name="type"><option>冒險心得</option><option>隊友鼓勵</option><option>任務情報</option><option>自由留言</option></select></label>
+        </div>
+        <label>你的留言<textarea id="content" name="content" maxlength="180" placeholder="把想說的話留在這裡……" required></textarea></label>
+        <div class="actions"><span class="hint"><span id="chars">0</span>/180　目前為本機展示模式</span><button class="submit" type="submit">✦ 留下訊息</button></div>
+      </form>
+      <div class="messages" id="messages" aria-live="polite"></div>
+    </section>
+  </main>
+  <div class="toast" id="toast" role="status">訊息已放上卷軸！</div>
+
+  <script>
+    // 日後串接 Google Apps Script 時，只要把部署網址貼在這裡。
+    const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbz_LuWNYbyAHedWa39u04vksF345H_S2LBJ07PPOZD53OB9DyW4uCvptFRKLELBsyUE/exec";
+    const STORAGE_KEY = "paipai_adventure_messages_v1";
+    const starterMessages = [
+      {name:"派派隊長",type:"隊友鼓勵",content:"歡迎來到營地！每一次練習，都是升級的經驗值。",time:"剛剛"},
+      {name:"米洛法師",type:"任務情報",content:"遇到難題先拆小步驟，魔法和程式都是這樣學會的。",time:"1 分鐘前"},
+      {name:"栗栗嚮導",type:"自由留言",content:"別忘了休息和補充水分，我們會一直在這裡等你！",time:"2 分鐘前"}
+    ];
+    const form=document.querySelector("#messageForm"),box=document.querySelector("#messages"),counter=document.querySelector("#counter"),content=document.querySelector("#content"),chars=document.querySelector("#chars"),toast=document.querySelector("#toast");
+    function safe(value){return String(value).replace(/[&<>'"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;","'":"&#39;",'"':"&quot;"}[c]));}
+    function load(){try{return JSON.parse(localStorage.getItem(STORAGE_KEY))||starterMessages}catch{return starterMessages}}
+    let messages=load();
+    function render(){counter.textContent=`${messages.length} 則訊息`;box.innerHTML=messages.length?messages.map(m=>`<article class="message"><div class="meta"><span class="name">${safe(m.name)}</span><span class="tag">${safe(m.type)}</span></div><p>${safe(m.content)}</p><div class="time">${safe(m.time)}</div></article>`).join(""):'<div class="empty">卷軸還是空的，成為第一位留言的冒險者吧！</div>';}
+    async function saveMessage(message){
+      if(GOOGLE_SCRIPT_URL){const response=await fetch(GOOGLE_SCRIPT_URL,{method:"POST",headers:{"Content-Type":"text/plain;charset=utf-8"},body:JSON.stringify(message)});if(!response.ok)throw new Error("留言傳送失敗");}
+      messages.unshift(message);localStorage.setItem(STORAGE_KEY,JSON.stringify(messages));render();
+    }
+    async function submitMessage(input){
+      const name=String(input.name||"").trim(),type=String(input.type||"自由留言"),text=String(input.content||"").trim();
+      if(!name||!text)throw new Error("請填寫名稱與留言");
+      if(name.length>16||text.length>180)throw new Error("留言內容超過字數限制");
+      const message={name,type,content:text,time:new Date().toLocaleString("zh-TW",{month:"numeric",day:"numeric",hour:"2-digit",minute:"2-digit"})};
+      await saveMessage(message);return message;
+    }
+    content.addEventListener("input",()=>chars.textContent=content.value.length);
+    form.addEventListener("submit",async e=>{e.preventDefault();const button=form.querySelector("button");button.disabled=true;try{await submitMessage(Object.fromEntries(new FormData(form)));form.reset();chars.textContent="0";toast.textContent="訊息已放上卷軸！"}catch(err){toast.textContent=err.message||"暫時無法留言"}finally{button.disabled=false;toast.classList.add("show");setTimeout(()=>toast.classList.remove("show"),2200)}});
+    if(document.modelContext?.registerTool){const lifecycle=new AbortController();Promise.resolve(document.modelContext.registerTool({name:"create_camp_message",title:"留下營地留言",description:"在派派鼠冒險留言板新增一則公開營地訊息。",inputSchema:{type:"object",properties:{name:{type:"string",maxLength:16},type:{type:"string",enum:["冒險心得","隊友鼓勵","任務情報","自由留言"]},content:{type:"string",maxLength:180}},required:["name","type","content"],additionalProperties:false},annotations:{readOnlyHint:false,untrustedContentHint:true},execute:async input=>{const m=await submitMessage(input);return {status:"created",message:m}}},{signal:lifecycle.signal})).catch(()=>{});}
+    render();
+  </script>
+</body>
+</html>
